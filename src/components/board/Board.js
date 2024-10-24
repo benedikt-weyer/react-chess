@@ -53,6 +53,11 @@ const Board = ({ gameState, boardOrientation}) => {
     }
 
     
+    const handlePieceMove = (piece, boardX, boardY) => {
+        //move piece
+        piece.boardX = boardX;
+        piece.boardY = boardY;
+    }
 
 
     const handleSelectSquare = (boardX, boardY) => {
@@ -70,10 +75,9 @@ const Board = ({ gameState, boardOrientation}) => {
                         const legalMoves = MoveCalculator.getLegalMoves(gameState, piece);
 
                         if(legalMoves.some(legalMove => legalMove.newBoardX === boardX && legalMove.newBoardY === boardY)){
+
                             //move piece
-                            //piece.boardX = boardX;
-                            //piece.boardY = boardY;
-                            //handlePieceMove(piece, boardX, boardY)
+                            handlePieceMove(piece, boardX, boardY);
 
                             return undefined;
                         }
