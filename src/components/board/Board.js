@@ -97,9 +97,14 @@ const Board = ({ gameState, boardOrientation}) => {
 
         //get legal moves
         let legalMoveIndicators = [];
+
         if(selectedSquare){
-            console.log('render selected')
-            legalMoveIndicators = MoveCalculator.getLegalMoves(gameState, selectedSquare.boardX, selectedSquare.boardY);
+            if(gameState.hasPieceAtTile(selectedSquare.boardX, selectedSquare.boardY)){
+
+                const selectedPiece = gameState.getPieceAtTile(selectedSquare.boardX, selectedSquare.boardY)
+
+                legalMoveIndicators = MoveCalculator.getLegalMoves(gameState, selectedPiece);
+            }
         }
 
         //iterate over board with screen coordinates

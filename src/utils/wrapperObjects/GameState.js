@@ -6,17 +6,27 @@ class GameState{
     }
 
     //pieces
-    addPiece = (piece) =>{
+    addPiece = (piece) => {
         this.pieces.push(piece)
     }
 
-    addPieces = (pieces) =>{
+    addPieces = (pieces) => {
         this.pieces.push(...pieces)
     }
 
-    setPieces = (pieces) =>{
+    setPieces = (pieces) => {
         this.pieces = pieces;
     }
+
+    getPieceAtTile = (boardX, boardY) => {
+        return this.pieces.find(piece => piece.boardX === boardX && piece.boardY === boardY);
+    }
+
+    hasPieceAtTile = (boardX, boardY) => {
+        return this.pieces.find(piece => piece.boardX === boardX && piece.boardY === boardY) !== undefined;
+    }
+
+
 
 
     //turn
