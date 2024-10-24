@@ -14,6 +14,7 @@ const Board = ({ gameState, boardOrientation}) => {
 
     const darkColor = "#234";
     const lightColor = "#def";
+    const selectColor = "#9ab";
     const legalMoveIndicatorColor = '#9ab'
 
     const [pieceAtlas] = useImage(pieceAtlasSrc);
@@ -57,25 +58,26 @@ const Board = ({ gameState, boardOrientation}) => {
     const handleSelectSquare = (boardX, boardY) => {
 
         setSelectedSquare(prevSelectedSquare => {
+            
             if(prevSelectedSquare){
                 if(prevSelectedSquare.boardX === boardX && prevSelectedSquare.boardY === boardY){
                     return undefined;
                 }else{
-
-                    /*const piece = gameState.pieces.find(piece => piece.boardX === prevSelectedSquare.boardX && piece.boardY === prevSelectedSquare.boardY);
+                    console.log('select new')
+                    const piece = gameState.pieces.find(piece => piece.boardX === prevSelectedSquare.boardX && piece.boardY === prevSelectedSquare.boardY);
                     if(piece){
 
-                        const legalMoves = getLegalMoves(gameState, piece);
+                        const legalMoves = MoveCalculator.getLegalMoves(gameState, piece);
 
                         if(legalMoves.some(legalMove => legalMove.newBoardX === boardX && legalMove.newBoardY === boardY)){
                             //move piece
                             //piece.boardX = boardX;
                             //piece.boardY = boardY;
-                            handlePieceMove(piece, boardX, boardY)
+                            //handlePieceMove(piece, boardX, boardY)
 
                             return undefined;
                         }
-                    }*/
+                    }
                 }                
             }
 
@@ -96,12 +98,20 @@ const Board = ({ gameState, boardOrientation}) => {
         //get legal moves
         let legalMoveIndicators = [];
         if(selectedSquare){
+            console.log('render selected')
             legalMoveIndicators = MoveCalculator.getLegalMoves(gameState, selectedSquare.boardX, selectedSquare.boardY);
         }
 
         //iterate over board
         for(let y=0; y<rowCount; y++) {
             for(let x=0; x<rowCount; x++) {
+
+                //determine tile color
+                let tileColor = (x+y) % 2 === (boardOrientation === PieceColor.WHITE ? 1 : 0) ? darkColor : lightColor;
+
+                if(selectedSquare && selectedSquare.boardX === x && selectedSquare.boardY === y){
+                    tileColor = selectColor;
+                }
 
                 //rects
                 rectsJSX.push(
@@ -111,7 +121,7 @@ const Board = ({ gameState, boardOrientation}) => {
                         y={boardSize / rowCount * y}
                         width={boardSize / rowCount}
                         height={boardSize / rowCount}
-                        fill={(x+y) % 2 === (boardOrientation === PieceColor.WHITE ? 1 : 0) ? darkColor : lightColor}
+                        fill={tileColor}
                         onClick={() => { handleSelectSquare(x, y); }}
                     />
                 );
