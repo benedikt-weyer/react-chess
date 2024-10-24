@@ -102,43 +102,48 @@ const Board = ({ gameState, boardOrientation}) => {
             legalMoveIndicators = MoveCalculator.getLegalMoves(gameState, selectedSquare.boardX, selectedSquare.boardY);
         }
 
-        //iterate over board
-        for(let y=0; y<rowCount; y++) {
-            for(let x=0; x<rowCount; x++) {
+        //iterate over board with screen coordinates
+        for(let screenY=0; screenY<rowCount; screenY++) {
+            for(let screenX=0; screenX<rowCount; screenX++) {
+
+                const currentBoardX = boardOrientation === PieceColor.WHITE ? rowCount - 1 - screenX : screenX;
+                const currentBoardY = boardOrientation === PieceColor.WHITE ? rowCount - 1 - screenY : screenY;
 
                 //determine tile color
-                let tileColor = (x+y) % 2 === (boardOrientation === PieceColor.WHITE ? 1 : 0) ? darkColor : lightColor;
+                let tileColor = (currentBoardX+currentBoardY) % 2 === 0 ? lightColor : darkColor;
 
-                if(selectedSquare && selectedSquare.boardX === x && selectedSquare.boardY === y){
+
+
+                if(selectedSquare && selectedSquare.boardX === currentBoardX && selectedSquare.boardY === currentBoardY){
                     tileColor = selectColor;
                 }
 
                 //rects
                 rectsJSX.push(
                     <Rect
-                        key={`rect-${x}-${y}`}
-                        x={boardSize / rowCount * x}
-                        y={boardSize / rowCount * y}
+                        key={`rect-${screenX}-${screenY}`}
+                        x={boardSize / rowCount * screenX}
+                        y={boardSize / rowCount * screenY}
                         width={boardSize / rowCount}
                         height={boardSize / rowCount}
                         fill={tileColor}
-                        onClick={() => { handleSelectSquare(x, y); }}
+                        onClick={() => { handleSelectSquare(currentBoardX, currentBoardY); }}
                     />
                 );
 
 
                 //pieces
-                const currentPiece = gameState.pieces.find(piece => piece.boardX === x && piece.boardY === y);
+                const currentPiece = gameState.pieces.find(piece => piece.boardX === currentBoardX && piece.boardY === currentBoardY);
 
                 if(currentPiece){
-                    const x = boardSize / rowCount * (boardOrientation === PieceColor.WHITE ? rowCount - 1 - currentPiece.boardX : currentPiece.boardX) + (boardSize / rowCount - pieceSize) / 2;
-                    const y = boardSize / rowCount * (boardOrientation === PieceColor.WHITE ? rowCount - 1 - currentPiece.boardY : currentPiece.boardY) + (boardSize / rowCount - pieceSize) / 2;
+                    const xPixelPosition = boardSize / rowCount * screenX + (boardSize / rowCount - pieceSize) / 2;
+                    const yPixelPosition = boardSize / rowCount * screenY + (boardSize / rowCount - pieceSize) / 2;
 
                     piecesJSX.push(
                         <Group 
-                            x={x} 
-                            y={y} 
-                            onClick={() => { handleSelectSquare(currentPiece.boardX, currentPiece.boardY); }}
+                            x={xPixelPosition} 
+                            y={yPixelPosition} 
+                            onClick={() => { handleSelectSquare(currentBoardX, currentBoardY); }}
                         >
                             { getSpriteImageByPiece(currentPiece, pieceSize) }
                         </Group>
@@ -147,19 +152,19 @@ const Board = ({ gameState, boardOrientation}) => {
 
 
                 //legal move indicators
-                const isLegalMoveIndicatorPresent = legalMoveIndicators.some(legalMoveIndicator => legalMoveIndicator.newBoardX === x && legalMoveIndicator.newBoardY === y);
+                const isLegalMoveIndicatorPresent = legalMoveIndicators.some(legalMoveIndicator => legalMoveIndicator.newBoardX === screenX && legalMoveIndicator.newBoardY === screenY);
 
                 if(isLegalMoveIndicatorPresent){
                     const radius = boardSize / rowCount / 2 / 4;
                     moveIndicatorJSX.push(
                         <Circle
-                            key={`moveIndicator-${x}-${y}`}
-                            x={boardSize / rowCount * ((boardOrientation === PieceColor.WHITE ? rowCount - 1 - x : x) + 0.5)}
-                            y={boardSize / rowCount * ((boardOrientation === PieceColor.WHITE ? rowCount - 1 - y : y) + 0.5)}
+                            key={`moveIndicator-${screenX}-${screenY}`}
+                            x={boardSize / rowCount * ((boardOrientation === PieceColor.WHITE ? rowCount - 1 - screenX : screenX) + 0.5)}
+                            y={boardSize / rowCount * ((boardOrientation === PieceColor.WHITE ? rowCount - 1 - screenY : screenY) + 0.5)}
                             radius={radius}
 
                             fill={legalMoveIndicatorColor}
-                            onClick={() => { handleSelectSquare(x, y); }}
+                            onClick={() => { handleSelectSquare(screenX, screenY); }}
                         />
                     );
                 }

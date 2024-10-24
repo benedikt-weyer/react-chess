@@ -48,7 +48,7 @@ const SinglePlayerGamePage = () => {
             <div className='flex justify-center'>
                 <Board
                     gameState={gameState} 
-                    boardOrientation={PieceColor.WHITE} 
+                    boardOrientation={PieceColor.BLACK} 
                 />
             </div>
         
