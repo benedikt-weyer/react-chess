@@ -27,6 +27,10 @@ class GameState{
     }
 
 
+    removePiece = (piece) => {
+        this.pieces.splice(this.pieces.findIndex(p => p === piece), 1);
+    }
+
 
 
     //turn
