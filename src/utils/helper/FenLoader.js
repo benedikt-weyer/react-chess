@@ -39,7 +39,7 @@ class FenLoader{
                 }else{
 
                     const pieceType = fenPieceTypeMap.get(char.toLowerCase());
-                    const isWhite = char == char.toLowerCase();
+                    const isWhite = char == char.toUpperCase();
     
                     const newPiece = new Piece(pointer % rowCount, Math.floor(pointer / rowCount), pieceType, isWhite);
                     pieces.push(newPiece)
