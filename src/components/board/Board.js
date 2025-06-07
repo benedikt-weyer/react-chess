@@ -124,8 +124,8 @@ const Board = ({ gameState, boardOrientation}) => {
         for(let screenY=0; screenY<rowCount; screenY++) {
             for(let screenX=0; screenX<rowCount; screenX++) {
 
-                const currentBoardX = boardOrientation === PieceColor.WHITE ? rowCount - 1 - screenX : screenX;
-                const currentBoardY = boardOrientation === PieceColor.WHITE ? rowCount - 1 - screenY : screenY;
+                const currentBoardX = boardOrientation === PieceColor.BLACK ? rowCount - 1 - screenX : screenX;
+                const currentBoardY = boardOrientation === PieceColor.BLACK ? rowCount - 1 - screenY : screenY;
 
                 //determine tile color
                 let tileColor = (currentBoardX+currentBoardY) % 2 === 0 ? lightColor : darkColor;
