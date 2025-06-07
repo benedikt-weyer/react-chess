@@ -159,6 +159,7 @@ const Board = ({ gameState, boardOrientation}) => {
 
                     piecesJSX.push(
                         <Group 
+                            key={`piece-${screenX}-${screenY}`}
                             x={xPixelPosition} 
                             y={yPixelPosition} 
                             onClick={() => { handleSelectSquare(currentBoardX, currentBoardY); }}
