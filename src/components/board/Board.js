@@ -53,10 +53,19 @@ const Board = ({ gameState, boardOrientation}) => {
     }
 
     
-    const handlePieceMove = (piece, boardX, boardY) => {
+    const handlePieceMove = (piece, newBoardX, newBoardY) => {
+        //if there is a piece at the new location, capture it
+        if(gameState.getPieceAtTile(newBoardX, newBoardX)){
+            //capture enemy piece
+            gameState.removePiece(gameState.getPieceAtTile(newBoardX, newBoardY));
+        }
+        
+
         //move piece
-        piece.boardX = boardX;
-        piece.boardY = boardY;
+        piece.boardX = newBoardX;
+        piece.boardY = newBoardY;
+
+        
     }
 
 
